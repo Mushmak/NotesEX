@@ -54,7 +54,9 @@ public class AddNote extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if(s.length() != 0) {
+                    getSupportActionBar().setTitle(s);
+                }
             }
         });
 
@@ -95,9 +97,13 @@ public class AddNote extends AppCompatActivity {
             Log.d("Inserted", "Time -> " + currentTime);
             db.addNote(note);
             Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
-            onBackPressed();
+            goToMain();
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void goToMain(){
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
