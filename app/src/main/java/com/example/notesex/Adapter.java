@@ -1,6 +1,7 @@
 package com.example.notesex;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
             Title = itemView.findViewById(R.id.Title);
             Time = itemView.findViewById(R.id.time);
             Date = itemView.findViewById(R.id.Date);
+
+          itemView.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                  Intent i = new Intent(view.getContext(),Details.class);
+                  i.putExtra("ID",notes.get(getAdapterPosition()).getId());
+                  view.getContext().startActivity(i);
+              }
+          });
 
         }
     }

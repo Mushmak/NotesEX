@@ -81,7 +81,7 @@ public class NoteExDatabase extends SQLiteOpenHelper {
        List<Note> allNotes = new ArrayList<>();
        // get all the data from tables
 
-       String query ="SELECT * FROM " +  DATABASE_TABLE;
+       String query ="SELECT * FROM " +  DATABASE_TABLE+" ORDER BY " +KEY_ID+ " DESC";
        Cursor cursor = db.rawQuery(query,null);
        if (cursor.moveToFirst()){
            do{
@@ -99,5 +99,21 @@ public class NoteExDatabase extends SQLiteOpenHelper {
        return allNotes;
    }
 
+   public void DeleteNote(long id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DATABASE_TABLE,KEY_ID+"=?",new String[]{String.valueOf(id)});
+        db.close();
+   }
+
+   public int editNote(Note note){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues c = new ContentValues();
+        Log.d("edited","Edited Title -> " + note.getTitle() + "\n ID ->" +note.getId());
+       c.put(KEY_TITLE,note.getTitle());
+       c.put(KEY_CONTENT,note.getContent());
+       c.put(KEY_DATE,note.getDate());
+       c.put(KEY_TIME,note.getTime());
+       return db.update(DATABASE_TABLE,c,KEY_ID+"=?",new String[]{String.valueOf(note.getId())});
+   }
 
 }
