@@ -37,14 +37,14 @@ public class MainActivity extends AppCompatActivity {
         adapter = new Adapter(this,notes);
         recyclerView.setAdapter(adapter);
     }
-
+//Use add menu toolbar in menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_menu, menu);
         return true;
     }
-
+//Give functionality to add toolbar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.add) {

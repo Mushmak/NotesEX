@@ -3,22 +3,28 @@ package com.example.notesex;
 public class Note {
     private long id;
     private String title, content, date, time;
+    private byte[] image;
 
+//Constructors for new Note
     Note() {}
 
-    Note(String title, String content, String date, String time) {
+    //No ID
+    Note(String title, String content, String date, String time, byte[] image) {
         this.title = title;
         this.content = content;
         this.date = date;
         this.time = time;
+        this.image = image;
     }
 
-    Note(long id, String title, String content, String date, String time) {
+    //with ID;
+    Note(long id, String title, String content, String date, String time, byte[] image) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.date = date;
         this.time = time;
+        this.image = image;
     }
 
     public long getId() {
@@ -60,4 +66,8 @@ public class Note {
     public void setTime(String time) {
         this.time = time;
     }
+
+    public byte[] getImage() { return image;}
+
+    public void setImage(byte[] image) { this.image = image; }
 }

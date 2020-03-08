@@ -3,6 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/Capture"
+        android:icon="@drawable/ic_camera_alt_black_24dp"
+        android:title="@string/capture"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/showImage_add"
+        android:title="@string/toggle" />
+    <item
         android:id="@+id/delete"
         android:icon="@drawable/ic_delete_white_24dp"
         android:title="@string/delete"

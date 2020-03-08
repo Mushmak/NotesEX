@@ -1,12 +1,16 @@
 package com.example.notesex;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -16,13 +20,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class Details extends AppCompatActivity {
     TextView noteDets;
+    ImageView imageView;
     Note note;
+    byte[] byteArray;
+    Bitmap image;
     NoteExDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +39,7 @@ public class Details extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         noteDets = findViewById(R.id.noteDets);
+        imageView = findViewById(R.id.detailImage);
 
         Intent intent = getIntent();
         Long id = intent.getLongExtra("ID",0);
@@ -42,6 +52,9 @@ public class Details extends AppCompatActivity {
         noteDets.setText(note.getContent());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         noteDets.setMovementMethod(new ScrollingMovementMethod());
+        byteArray = note.getImage();
+        image = convertImage();
+        imageView.setImageBitmap(image);
 
 
       /*  FloatingActionButton fab = findViewById(R.id.fab);
@@ -61,6 +74,7 @@ public class Details extends AppCompatActivity {
         inflater.inflate(R.menu.edit_menu, menu);
         return true;
     }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.editNote){
@@ -75,6 +89,14 @@ public class Details extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(),MainActivity.class));
           //  onBackPressed();
         }
+        if(item.getItemId()== R.id.showimage){
+            if(imageView.getImageAlpha() == 0){
+                imageView.setImageAlpha(255);
+            }
+            else{
+                imageView.setImageAlpha(0);
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
     @Override
@@ -83,7 +105,8 @@ public class Details extends AppCompatActivity {
         super.onBackPressed();
     }
 
-
-
+    public Bitmap convertImage(){
+        return BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+    }
 
 }

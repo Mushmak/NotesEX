@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/showimage"
+        android:icon="@drawable/ic_slideshow_black_24dp"
+        android:title="@string/toggle"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/delete"
         android:icon="@drawable/ic_delete_white_24dp"
         android:title="Delete"

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -119,6 +120,7 @@ public class Edit extends AppCompatActivity {
                     intent.putExtra("ID",note.getId());
                     startActivity(intent);
         }
+
         return super.onOptionsItemSelected(item);
     }
     private void goToMain(){
