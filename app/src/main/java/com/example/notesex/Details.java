@@ -53,9 +53,13 @@ public class Details extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         noteDets.setMovementMethod(new ScrollingMovementMethod());
         byteArray = note.getImage();
-        image = convertImage();
-        imageView.setImageBitmap(image);
-
+        if(byteArray != null) {
+            image = convertImage();
+            imageView.setImageBitmap(image);
+        }
+        else{
+            Toast.makeText(this, "There is no image", Toast.LENGTH_SHORT).show();
+        }
 
       /*  FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
