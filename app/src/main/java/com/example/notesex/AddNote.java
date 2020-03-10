@@ -123,7 +123,12 @@ public class AddNote extends AppCompatActivity {
 
         }
         if(item.getItemId() == R.id.showImage_add){
-            imageView.setImageAlpha(255);
+            if(imageView.getImageAlpha() == 0){
+                imageView.setImageAlpha(255);
+            }
+            else{
+                imageView.setImageAlpha(0);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
