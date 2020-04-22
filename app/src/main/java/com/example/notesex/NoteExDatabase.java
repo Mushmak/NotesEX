@@ -12,7 +12,7 @@ import java.util.List;
 
 public class NoteExDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "NoteDb";
     private static final String DATABASE_TABLE = "NoteTable";
 
@@ -119,6 +119,20 @@ public class NoteExDatabase extends SQLiteOpenHelper {
        c.put(KEY_TIME,note.getTime());
        c.put(KEY_IMAGE,note.getImage());
        return db.update(DATABASE_TABLE,c,KEY_ID+"=?",new String[]{String.valueOf(note.getId())});
+   }
+
+   public Note SearchNotes(String queryString){
+       SQLiteDatabase db = this.getReadableDatabase();
+       String searchTerm = "SELECT "+ KEY_TITLE+" FROM " + DATABASE_TABLE+" WHERE "+KEY_TITLE+" LIKE '" +queryString+ "%'";
+       Cursor cursor = db.query(DATABASE_TABLE,null,searchTerm,null,null,null,null);
+       if (cursor  != null)
+       {
+           cursor.moveToFirst();
+       }
+       Note note = new Note(cursor.getLong(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getBlob(5));
+       return note;
+
+
    }
 
 }

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -51,8 +52,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddNote.class);
             startActivity(intent);
         }
+
+
         return super.onOptionsItemSelected(item);
     }
+
 
 
 

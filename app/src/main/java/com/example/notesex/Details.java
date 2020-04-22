@@ -1,5 +1,6 @@
 package com.example.notesex;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -88,9 +90,22 @@ public class Details extends AppCompatActivity {
 
         }
         if(item.getItemId() == R.id.delete){
-            db.DeleteNote(note.getId());
-            Toast.makeText(getApplicationContext(),"Note Deleted",Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            AlertDialog.Builder dialong = new AlertDialog.Builder(this);
+            dialong.setTitle("Delete");
+            dialong.setMessage("Do you want to delete this note? ");
+            dialong.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    db.DeleteNote(note.getId());
+                    Toast.makeText(getApplicationContext(),"Note Deleted",Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                }
+            });
+            dialong.setNegativeButton("NO",null);
+            AlertDialog di = dialong.create();
+            di.show();
+
+
           //  onBackPressed();
         }
         if(item.getItemId()== R.id.showimage){
