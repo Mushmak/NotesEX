@@ -24,6 +24,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*
+    View previously made notes.  Accessed from Main activity after selecting a note listed.
+ */
 public class Details extends AppCompatActivity {
     TextView noteDets;
     ImageView imageView;
@@ -31,6 +34,7 @@ public class Details extends AppCompatActivity {
     byte[] byteArray;
     Bitmap image;
     NoteExDatabase db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +76,14 @@ public class Details extends AppCompatActivity {
     */
     }
 
+    //Extra menu in top right
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.edit_menu, menu);
         return true;
     }
+    //Action called based on item pressed.
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

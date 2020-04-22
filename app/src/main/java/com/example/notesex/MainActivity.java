@@ -18,6 +18,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Initialize Variables
     Toolbar toolbar;
     RecyclerView recyclerView;
     Adapter adapter;

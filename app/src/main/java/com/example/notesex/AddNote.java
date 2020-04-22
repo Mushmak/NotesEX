@@ -25,6 +25,10 @@ import androidx.appcompat.widget.Toolbar;
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 
+/*
+    Create a new note, allow for editing and then add it to the main menu for viewing
+*/
+
 public class AddNote extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -133,16 +137,19 @@ public class AddNote extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Return to main menu
     private void goToMain(){
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }
 
+    //Go back
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
 
+    //Intent to open camera and take picture
     private void dispatchTakePictureIntent(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -150,6 +157,7 @@ public class AddNote extends AppCompatActivity {
         }
     }
 
+    //Returns image from camera
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -161,6 +169,7 @@ public class AddNote extends AppCompatActivity {
         }
     }
 
+    //converts image into an array of bytes
     public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
