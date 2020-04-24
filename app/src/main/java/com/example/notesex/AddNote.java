@@ -7,8 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,14 +19,20 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /*
     Create a new note, allow for editing and then add it to the main menu for viewing
@@ -32,6 +41,7 @@ import java.util.Calendar;
 public class AddNote extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    public final String APP_TAG = "NoteEx";
 
     Toolbar toolbar;
     EditText noteTitle, noteDetails;
@@ -39,8 +49,13 @@ public class AddNote extends AppCompatActivity {
     Calendar calendar;
     String todaysDate;
     String currentTime;
+    String currentImagePath = null;
+    String timeStamp;
     Bitmap image;
     byte[] byteArray;
+    int imageCount=0;
+    int imageIndex=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +98,7 @@ public class AddNote extends AppCompatActivity {
         todaysDate = (calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.DAY_OF_MONTH)+ "/" + calendar.get(Calendar.YEAR)  ;
         currentTime = pad(calendar.get(Calendar.HOUR)) + ":" + pad(calendar.get(Calendar.MINUTE));
         Log.d("calendar", "Date and Time: " + todaysDate +" and " + currentTime);
+        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
     }
 
     private String pad(int i) {
@@ -151,28 +167,77 @@ public class AddNote extends AppCompatActivity {
 
     //Intent to open camera and take picture
     private void dispatchTakePictureIntent(){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        String fileName = "jpg_"+timeStamp+"_"+imageCount+"_.jpg";
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(cameraIntent.resolveActivity(getPackageManager())!= null){
+            File imageFile = null;
+
+            try {
+                imageFile = getImageFile(fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if(imageFile != null){
+                Uri imageUri = FileProvider.getUriForFile(this,"com.example.android.fileprovider", imageFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+
+                startActivityForResult(cameraIntent,REQUEST_IMAGE_CAPTURE);
+                imageCount++;
+
+            }
         }
     }
-
-    //Returns image from camera
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            image = (Bitmap) extras.get("data");
+    //sets image view to indexed image
+    public void displayImage(){
+        String imageName = "jpg_"+timeStamp+"_"+imageIndex+"_.jpg";
+        File imageFile = null;
+        try {
+            imageFile = getImageFile(imageName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(imageFile.exists()){
+            Log.d("Image","Exists");
+            image= BitmapFactory.decodeFile(imageFile.getAbsolutePath());
             imageView.setImageBitmap(image);
-            byteArray = getBitmapAsByteArray(image);
+        }
+        else{
+            Log.d("Image","Does Not Exist");
         }
     }
 
-    //converts image into an array of bytes
-    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-        return outputStream.toByteArray();
+    //gets file path
+    private File getImageFile(String fileName) throws IOException {
+        File imageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),APP_TAG);
+
+        if(!imageDir.exists() && !imageDir.mkdirs()){
+            Log.d(APP_TAG, "FAILED TO CREATE IMAGE DIRECTORY");
+        }
+
+        File image = new File(imageDir.getPath()+File.separator+fileName);
+        return image;
+    }
+
+    //scrolls Image gallery backward
+    public void previousImage(View view) {
+        if(imageIndex == 0){
+            imageIndex=imageCount;
+        }
+        else{
+            imageIndex--;
+        }
+        displayImage();
+    }
+    //scrolls Image gallery forward
+    public void nextImage(View view) {
+        if(imageIndex==imageCount-1){
+            imageIndex=0;
+        }
+        else{
+            imageIndex++;
+        }
+        Log.d("Current Index:", String.valueOf(imageIndex));
+        displayImage();
     }
 }
