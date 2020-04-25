@@ -5,21 +5,34 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
+public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements Filterable {
 
     LayoutInflater inflater;
     List<Note> notes;
+    List<Note> NotesAll;
 
+    /*
     Adapter(Context context, List<Note> notes){
         this.inflater = LayoutInflater.from(context);
         this.notes = notes;
+
+    }*/
+
+    public Adapter(Context context, List<Note> notes){
+        this.inflater = LayoutInflater.from(context);
+        this.notes = notes;
+        this.NotesAll = new ArrayList<>(notes);
     }
 
     @NonNull
@@ -45,6 +58,40 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     public int getItemCount() {
         return notes.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Note> filteredList = new ArrayList<>();
+
+            if(charSequence.toString().isEmpty()){
+                filteredList.addAll(NotesAll);
+            }else{
+                for(Note x: NotesAll){
+                    if(x.getTitle().toLowerCase().contains(charSequence.toString().toLowerCase())){
+                        filteredList.add(x);
+                    }
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                notes.clear();
+                notes.addAll((Collection<? extends Note>) filterResults.values);
+                notifyDataSetChanged();
+        }
+    };
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView Title,Date, Time;
