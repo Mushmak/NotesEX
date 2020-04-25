@@ -166,7 +166,7 @@ public class AddNote extends AppCompatActivity {
             }
 
                 Intent aduioA = new Intent(this, AudioActivity.class);
-                aduioA.putExtra("data",timestamp);
+                aduioA.putExtra("data",timeStamp);
                 startActivity(aduioA);
 
 
