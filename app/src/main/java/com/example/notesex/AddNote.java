@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -25,7 +27,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import androidx.core.content.FileProvider;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -53,6 +60,7 @@ public class AddNote extends AppCompatActivity {
     String timeStamp;
     Bitmap image;
     byte[] byteArray;
+
     int imageCount=0;
     int imageIndex=0;
 
@@ -150,6 +158,19 @@ public class AddNote extends AppCompatActivity {
             else{
                 imageView.setImageAlpha(0);
             }
+        }
+        if(item.getItemId() == R.id.recordAudio){
+
+            if ((ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) && ContextCompat.checkSelfPermission(this,Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO},20);
+            }
+
+                Intent aduioA = new Intent(this, AudioActivity.class);
+                aduioA.putExtra("data",timestamp);
+                startActivity(aduioA);
+
+
+
         }
         return super.onOptionsItemSelected(item);
     }
