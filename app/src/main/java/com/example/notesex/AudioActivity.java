@@ -15,6 +15,9 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class AudioActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer;
@@ -22,6 +25,7 @@ public class AudioActivity extends AppCompatActivity {
     Button play, record, stop;
     private static String audioFilePath;
     boolean isRecording  = false;
+    String timeStamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,9 @@ public class AudioActivity extends AppCompatActivity {
         play = findViewById(R.id.playAudio);
         record = findViewById(R.id.record);
         stop = findViewById(R.id.stop);
+        Note note = new Note();
         mediaRecorder = new MediaRecorder();
+        String timestamp = getIntent().getStringExtra("data");
         if (!hasMic())
         {
             stop.setEnabled(false);
@@ -42,9 +48,10 @@ public class AudioActivity extends AppCompatActivity {
         }
 
         audioFilePath = getExternalCacheDir().getAbsolutePath()
-                        + "/notex";
+                        + "/notex" + timestamp ;
 
 
+        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
     }
     protected boolean hasMic(){

@@ -41,6 +41,7 @@ public class AddNote extends AppCompatActivity {
     String currentTime;
     Bitmap image;
     byte[] byteArray;
+    String timecombo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +81,11 @@ public class AddNote extends AppCompatActivity {
 
         //Get current date and time
         calendar = Calendar.getInstance();
-        todaysDate = (calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.DAY_OF_MONTH)+ "/" + calendar.get(Calendar.YEAR)  ;
+        todaysDate = (calendar.get(Calendar.MONTH)+1) + "_" + calendar.get(Calendar.DAY_OF_MONTH)+ "_" + calendar.get(Calendar.YEAR)  ;
         currentTime = pad(calendar.get(Calendar.HOUR)) + ":" + pad(calendar.get(Calendar.MINUTE));
         Log.d("calendar", "Date and Time: " + todaysDate +" and " + currentTime);
+
+        timecombo = todaysDate + currentTime;
     }
 
     private String pad(int i) {
@@ -136,6 +139,7 @@ public class AddNote extends AppCompatActivity {
             }
 
                 Intent aduioA = new Intent(this, AudioActivity.class);
+                aduioA.putExtra("data",timecombo);
                 startActivity(aduioA);
 
 
