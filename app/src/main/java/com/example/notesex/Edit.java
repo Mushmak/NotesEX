@@ -18,6 +18,10 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+/*
+    Edit previously made notes, accessed from Details Activity
+ */
+
 public class Edit extends AppCompatActivity {
 
 

@@ -1,5 +1,7 @@
 package com.example.notesex;
-
+/*
+    Note Template
+ */
 public class Note {
     private long id;
     private String title, content, date, time;

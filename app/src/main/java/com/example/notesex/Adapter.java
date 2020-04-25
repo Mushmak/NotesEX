@@ -16,7 +16,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements Filterable {
+/*
+    Populate main menu
+ */
+
 
     LayoutInflater inflater;
     List<Note> notes;

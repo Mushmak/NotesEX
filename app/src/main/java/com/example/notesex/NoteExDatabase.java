@@ -10,6 +10,10 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    Database for storing data for each note
+ */
+
 public class NoteExDatabase extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 4;
