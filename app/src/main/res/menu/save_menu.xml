@@ -8,9 +8,6 @@
         android:title="@string/capture"
         app:showAsAction="collapseActionView" />
     <item
-        android:id="@+id/showImage_add"
-        android:title="@string/toggle" />
-    <item
         android:id="@+id/recordAudio"
         android:title="Add Audio" />
     <item

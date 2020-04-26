@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/showimage"
+        android:id="@+id/Capture"
         android:icon="@drawable/ic_slideshow_black_24dp"
         android:title="@string/toggle"
         app:showAsAction="ifRoom" />

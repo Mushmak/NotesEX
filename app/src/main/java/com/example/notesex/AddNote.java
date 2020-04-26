@@ -144,20 +144,14 @@ public class AddNote extends AppCompatActivity {
             Log.d("Inserted", "Time -> " + currentTime);
             Log.d("Inserted", "Image");
             db.addNote(note);
+            note.setImageCount(imageCount);
+            note.setImageIndex(imageIndex);
             Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
             goToMain();
         }
         if(item.getItemId() == R.id.Capture){
             dispatchTakePictureIntent();
 
-        }
-        if(item.getItemId() == R.id.showImage_add){
-            if(imageView.getImageAlpha() == 0){
-                imageView.setImageAlpha(255);
-            }
-            else{
-                imageView.setImageAlpha(0);
-            }
         }
         if(item.getItemId() == R.id.recordAudio){
 
