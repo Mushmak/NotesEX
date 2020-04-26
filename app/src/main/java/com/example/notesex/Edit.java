@@ -67,7 +67,7 @@ public class Edit extends AppCompatActivity {
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(note.getTitle());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         noteTitle = findViewById(R.id.noteTitle);
@@ -110,6 +110,8 @@ public class Edit extends AppCompatActivity {
         date = note.getDate();
         timeStamp = date+time;
 
+        displayImage();
+
     }
 
     private String pad(int i) {
@@ -151,6 +153,12 @@ public class Edit extends AppCompatActivity {
         }
         if(item.getItemId() == R.id.Capture){
             dispatchTakePictureIntent();
+        }
+        if(item.getItemId()== R.id.recordAudio){
+            Intent aduioA = new Intent(this, AudioActivity.class);
+            aduioA.putExtra("data",timeStamp);
+            startActivity(aduioA);
+
         }
 
         return super.onOptionsItemSelected(item);
