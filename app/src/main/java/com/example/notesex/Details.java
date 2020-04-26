@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class Details extends AppCompatActivity {
     String time;
     int imageCount;
     int imageIndex;
+    MediaPlayer mediaPlayer;
 
 
     @Override
@@ -127,6 +129,17 @@ public class Details extends AppCompatActivity {
 
           //  onBackPressed();
         }
+        if(item.getItemId()==R.id.playAudio){
+            try {
+                playAudio();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(item.getItemId()==R.id.pause){
+            mediaPlayer.release();
+
+        }
         return super.onOptionsItemSelected(item);
     }
     @Override
@@ -192,6 +205,15 @@ public class Details extends AppCompatActivity {
         Log.d("Current Index:", String.valueOf(imageIndex));
         displayImage();
     }
+
+    public void playAudio() throws IOException {
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setDataSource(getExternalCacheDir().getAbsolutePath()
+                + "/notex" + timeStamp );
+        mediaPlayer.prepare();
+        mediaPlayer.start();
+    }
+
 
 
 }

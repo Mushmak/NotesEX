@@ -3,18 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/Capture"
-        android:icon="@drawable/ic_slideshow_black_24dp"
-        android:title="@string/toggle"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/pause"
+        android:icon="@android:drawable/ic_media_pause"
+        android:title="Item"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/playAudio"
+        android:icon="@android:drawable/ic_lock_silent_mode_off"
+        android:title="playAudio"
+        app:showAsAction="always" />
     <item
         android:id="@+id/delete"
         android:icon="@drawable/ic_delete_white_24dp"
         android:title="Delete"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/editNote"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="Edit"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>
