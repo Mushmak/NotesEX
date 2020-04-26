@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -15,7 +16,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -26,16 +30,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+
 /*
     View previously made notes.  Accessed from Main activity after selecting a note listed.
  */
 public class Details extends AppCompatActivity {
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    public final String APP_TAG = "NoteEx";
     TextView noteDets;
     ImageView imageView;
     Note note;
     byte[] byteArray;
     Bitmap image;
     NoteExDatabase db;
+    String timeStamp;
+    String date;
+    String time;
+    int imageCount;
+    int imageIndex;
 
 
     @Override
@@ -58,14 +72,13 @@ public class Details extends AppCompatActivity {
         noteDets.setText(note.getContent());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         noteDets.setMovementMethod(new ScrollingMovementMethod());
-        byteArray = note.getImage();
-        if(byteArray != null) {
-            image = convertImage();
-            imageView.setImageBitmap(image);
-        }
-        else{
-            Toast.makeText(this, "There is no image", Toast.LENGTH_SHORT).show();
-        }
+
+        date = note.getDate();
+        time = note.getTime();
+        timeStamp = date+time;
+        imageCount = note.getImageCount();
+        imageIndex = note.getImageIndex();
+        displayImage();
 
       /*  FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -114,14 +127,6 @@ public class Details extends AppCompatActivity {
 
           //  onBackPressed();
         }
-        if(item.getItemId()== R.id.showimage){
-            if(imageView.getImageAlpha() == 0){
-                imageView.setImageAlpha(255);
-            }
-            else{
-                imageView.setImageAlpha(0);
-            }
-        }
         return super.onOptionsItemSelected(item);
     }
     @Override
@@ -130,8 +135,63 @@ public class Details extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    public Bitmap convertImage(){
-        return BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+
+
+    //sets image view to indexed image
+    public void displayImage(){
+        String imageName = "jpg_"+timeStamp+"_"+imageIndex+"_.jpg";
+        File imageFile = null;
+        try {
+            imageFile = getImageFile(imageName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(imageFile.exists()){
+            Log.d("Image","Exists");
+            image= BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+            imageView.setImageBitmap(image);
+        }
+        else{
+            Log.d("Image","Does Not Exist");
+        }
     }
+
+    //gets file path
+    private File getImageFile(String fileName) throws IOException {
+        File imageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),APP_TAG);
+
+        if(!imageDir.exists() && !imageDir.mkdirs()){
+            Log.d(APP_TAG, "FAILED TO CREATE IMAGE DIRECTORY");
+        }
+
+        File image = new File(imageDir.getPath()+File.separator+fileName);
+        return image;
+    }
+
+    //scrolls Image gallery backward
+    public void previousImage(View view) {
+        if(imageIndex == 0){
+            imageIndex=imageCount;
+        }
+        else{
+            imageIndex--;
+        }
+        note.setImageIndex(imageIndex);
+        displayImage();
+    }
+    //scrolls Image gallery forward
+    public void nextImage(View view) {
+        if(imageIndex==imageCount-1){
+            imageIndex=0;
+        }
+        else{
+            imageIndex++;
+
+        }
+        note.setImageIndex(imageIndex);
+        Log.d("Current Index:", String.valueOf(imageIndex));
+        displayImage();
+    }
+
 
 }

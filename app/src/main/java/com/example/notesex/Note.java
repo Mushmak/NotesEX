@@ -6,6 +6,8 @@ public class Note {
     private long id;
     private String title, content, date, time;
     private byte[] image;
+    private int imageCount = 0;
+    private int imageIndex = 0;
 
 //Constructors for new Note
     Note() {}
@@ -72,4 +74,12 @@ public class Note {
     public byte[] getImage() { return image;}
 
     public void setImage(byte[] image) { this.image = image; }
+
+    public void setImageCount(int imageCount) {this.imageCount = imageCount;}
+
+    public int getImageCount() {return imageCount;}
+
+    public void setImageIndex(int imageIndex) {this.imageIndex = imageIndex;}
+
+    public int getImageIndex() {return imageIndex;}
 }
